@@ -1,26 +1,40 @@
+# TOML 用 [表名] 把相关配置分组；# 开头是注释，安装工具会忽略。
+# 构建工具负责把项目打包成可安装的 Python 包。
 [build-system]
+# 方括号里的字符串组成依赖列表；>=68 表示 setuptools 至少为 68。
 requires = ["setuptools>=68"]
+# setuptools.build_meta 是具体执行构建工作的后端名称。
 build-backend = "setuptools.build_meta"
 
+# [project] 存放包的名称、版本及安装要求等基本资料。
 [project]
+# `键 = 值` 是 TOML 的基本写法；引号中的内容是字符串。
 name = "review-pilot"
 version = "0.1.0"
 description = "A code review agent built milestone by milestone."
+# readme 指向项目说明文件；安装工具会读取它作为包说明。
 readme = "README.md"
+# 引号里的 >=3.11 是版本要求，不是 Python 中的比较表达式。
 requires-python = ">=3.11"
+# 本阶段程序运行本身不需要第三方库，所以运行依赖是空列表。
 dependencies = []
 
+# “可选依赖”只有请求对应分组时才安装。
 [project.optional-dependencies]
+# `pip install -e '.[dev]'` 中的 dev 就指下面这个分组。
 dev = [
     "pytest>=8.0",
 ]
 
+# 安装后，终端命令 review-pilot 会调用包里 cli.py 的 main 函数。
 [project.scripts]
 review-pilot = "review_pilot.cli:main"
 
+# 告诉 setuptools 到 src 目录中寻找要打包的 Python 包。
 [tool.setuptools.packages.find]
 where = ["src"]
 
+# pytest 的项目配置：在 tests 中找测试，并用 -q 显示简洁结果。
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
